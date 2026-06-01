@@ -1,0 +1,85 @@
+name: osv-scanner
+target:
+  registry: ocx.sh
+  repository: osv-scanner
+
+source:
+  type: github_release
+  owner: google
+  repo: osv-scanner
+  tag_pattern: "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
+
+# Pass 1 — Linux only. darwin/windows staged below for Pass 2/3.
+assets:
+  # Raw binaries — no archive. One file per platform, versionless names since
+  # v2.0.0 (`osv-scanner_<os>_<arch>`; v1 embedded the version in the name).
+  # Windows assets carry a `.exe` suffix on the asset.
+  linux/amd64:
+    - "^osv-scanner_linux_amd64$"
+  linux/arm64:
+    - "^osv-scanner_linux_arm64$"
+  # darwin/amd64:
+  #   - "^osv-scanner_darwin_amd64$"
+  # darwin/arm64:
+  #   - "^osv-scanner_darwin_arm64$"
+  # windows/amd64:
+  #   - "^osv-scanner_windows_amd64\\.exe$"
+  # windows/arm64:
+  #   - "^osv-scanner_windows_arm64\\.exe$"
+
+asset_type:
+  # Raw binary on every platform. The asset lands as `osv-scanner` (the Windows
+  # asset keeps the `.exe` suffix from the source name automatically).
+  type: binary
+  name: osv-scanner
+
+metadata:
+  default: metadata.json
+
+skip_prereleases: true
+cascade: true
+build_timestamp: none
+
+versions:
+  min: "2.0.0"
+  new_per_run: 5
+  # Poll upstream every 6 hours for new releases. Without this the generated
+  # workflow only fires on workflow_dispatch + push, never auto-discovering.
+  poll_interval: "0 */6 * * *"
+
+verify:
+  github_asset_digest: true
+
+concurrency:
+  max_downloads: 8
+  max_bundles: 4
+  max_pushes: 2
+  rate_limit_ms: 100
+  max_retries: 3
+  compression_threads: 0
+
+tests:
+  - name: smoke
+    script: tests/smoke.star
+
+platforms:
+  linux/amd64:
+    runner: ubuntu-latest
+  linux/arm64:
+    runner: ubuntu-24.04-arm
+  # darwin/amd64:
+  #   runner: macos-latest
+  #   prefix: ["arch", "-x86_64"]
+  # darwin/arm64:
+  #   runner: macos-latest
+  #   shell: bash
+  # windows/amd64:
+  #   runner: windows-latest
+  #   shell: pwsh
+  # windows/arm64:
+  #   runner: windows-11-arm
+  #   shell: pwsh
+
+notify:
+  discord:
+    webhook_secret: OCX_MIRROR_DISCORD_HOOK
