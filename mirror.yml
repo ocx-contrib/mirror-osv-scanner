@@ -18,10 +18,10 @@ assets:
     - "^osv-scanner_linux_amd64$"
   linux/arm64:
     - "^osv-scanner_linux_arm64$"
-  # darwin/amd64:
-  #   - "^osv-scanner_darwin_amd64$"
-  # darwin/arm64:
-  #   - "^osv-scanner_darwin_arm64$"
+  darwin/amd64:
+    - "^osv-scanner_darwin_amd64$"
+  darwin/arm64:
+    - "^osv-scanner_darwin_arm64$"
   # windows/amd64:
   #   - "^osv-scanner_windows_amd64\\.exe$"
   # windows/arm64:
@@ -67,12 +67,10 @@ platforms:
     runner: ubuntu-latest
   linux/arm64:
     runner: ubuntu-24.04-arm
-  # darwin/amd64:
-  #   runner: macos-latest
-  #   prefix: ["arch", "-x86_64"]
-  # darwin/arm64:
-  #   runner: macos-latest
-  #   shell: bash
+  darwin/amd64:
+    runner: macos-13
+  darwin/arm64:
+    runner: macos-14
   # windows/amd64:
   #   runner: windows-latest
   #   shell: pwsh
