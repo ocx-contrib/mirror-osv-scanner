@@ -22,10 +22,10 @@ assets:
     - "^osv-scanner_darwin_amd64$"
   darwin/arm64:
     - "^osv-scanner_darwin_arm64$"
-  # windows/amd64:
-  #   - "^osv-scanner_windows_amd64\\.exe$"
-  # windows/arm64:
-  #   - "^osv-scanner_windows_arm64\\.exe$"
+  windows/amd64:
+    - "^osv-scanner_windows_amd64\\.exe$"
+  windows/arm64:
+    - "^osv-scanner_windows_arm64\\.exe$"
 
 asset_type:
   # Raw binary on every platform. The asset lands as `osv-scanner` (the Windows
@@ -73,12 +73,12 @@ platforms:
     runner: macos-14
   darwin/arm64:
     runner: macos-14
-  # windows/amd64:
-  #   runner: windows-latest
-  #   shell: pwsh
-  # windows/arm64:
-  #   runner: windows-11-arm
-  #   shell: pwsh
+  windows/amd64:
+    runner: windows-latest
+    shell: pwsh
+  windows/arm64:
+    runner: windows-11-arm
+    shell: pwsh
 
 notify:
   discord:
